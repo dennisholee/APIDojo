@@ -1,0 +1,87 @@
+workspace {
+     
+    model {
+    
+        user = person "User"
+    
+        alphaApplication = softwareSystem "Alpha System" {
+            
+            webApp = container "WebApp" {
+                user -> this "Search user"
+            }
+            
+            backend = container "Backend" {
+                
+                group "Adapter Layer" {
+                    apiAdapter = component "Query API Adapter" {
+                        webApp -> this "query user"
+                    }
+                    
+                    queryByNameResolver = component "Query By Name Resolver" {
+                        apiAdapter -> this "resolve"
+                    }
+                    
+                    queryByMembershipResolver = component "Query By Membership Resolver" {
+                        apiAdapter -> this "resolve"
+                    }
+                    
+                    queryResolverFactory = component "Query Resolver Factory" {
+                        apiAdapter -> this "Get Query App"
+                        this -> queryByNameResolver "Create app"
+                        this -> queryByMembershipResolver "Create app"
+                    }
+                }
+                
+                group "App Layer" {
+                    queryByNameApp = component "Query By User App" {
+                        queryByNameResolver -> this "queryByNaneCommand"
+                    }
+                
+                
+                    queryByMembershipApp = component "Query By Membership App" {
+                        queryByMembershipResolver -> this "queryByMembershipCommand"
+                    }
+                }
+                
+            }
+        }
+        
+    }
+
+    views {
+        systemLandscape {
+            include *
+            autoLayout
+        }
+        
+        systemContext alphaApplication {
+            include *
+            autoLayout
+        }
+        
+        container alphaApplication {
+            include *
+            autoLayout lr
+        }
+        
+        component backend {
+            include *
+            autoLayout lr
+        }
+    
+        theme default
+        
+        styles {
+            element kafka {
+                shape pipe
+            }
+            
+            element database {
+                shape cylinder
+            }
+        }
+
+    }
+    
+}
+

@@ -1,0 +1,30 @@
+@startyaml
+!theme vibrant
+
+
+POST /users:
+  QueryUserRequest:
+    QueryByName:
+      queryType: "* QueryByName *"
+      firstName: "User's first name"
+      lastName: "User's last name"
+    QueryByMembership:
+      queryType: "* QueryByMembership *"
+      membershipId: "User's membership ID"
+
+  QueryUserResponse:
+    QueryUserResult:
+      user:
+        id: "User's system generate identifier"
+        version: "Datastore optimistic locking"
+        userModel:
+          firstName: "User's first name"
+          lastName: "User's last name"
+          email: "User's email"
+      status:
+        code: "Application's response code"
+        message: "Application's response message"
+
+  
+
+@endyaml
